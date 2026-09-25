@@ -22,23 +22,12 @@ enum Mode: string
     case Exact = 'exact';
 
     /**
-     * Accepte une instance de Mode ou son nom texte, y compris les conditions
-     * historiques des datatables ('contain', 'start_with', 'end_with', 'equal').
+     * Accepte une instance de Mode ou sa valeur texte ('contains', 'starts_with', 'ends_with', 'exact').
      *
      * @throws \ValueError si le mode est inconnu
      */
     public static function resolve(self|string $mode): self
     {
-        if ($mode instanceof self) {
-            return $mode;
-        }
-
-        return match ($mode) {
-            'contain' => self::Contains,
-            'start_with', 'starts' => self::StartsWith,
-            'end_with', 'ends' => self::EndsWith,
-            'equal', 'equals' => self::Exact,
-            default => self::from($mode),
-        };
+        return $mode instanceof self ? $mode : self::from($mode);
     }
 }

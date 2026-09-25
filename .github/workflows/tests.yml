@@ -17,7 +17,7 @@ jobs:
         db: [sqlite, mysql, mariadb, pgsql]
         dependencies: [highest]
         include:
-          # Versions minimales supportées : Laravel 11, Symfony 6.4, Doctrine ORM 3.3
+          # Versions minimales supportées : Laravel 12, Symfony 7.2, Doctrine ORM 3.3
           - { php: '8.2', db: sqlite, dependencies: lowest }
           - { php: '8.2', db: mysql, dependencies: lowest }
           - { php: '8.2', db: pgsql, dependencies: lowest }

@@ -56,7 +56,7 @@ final class Dataset
             'se termine par' => ['bio', Mode::EndsWith, ['coton_bio']],
             'égal' => ['eleve', Mode::Exact, ['Élève', 'eleve']],
             'égal ne fait pas de contient' => ['elev', Mode::Exact, []],
-            'mode texte (datatable)' => ['cre', 'start_with', ['Crème brûlée']],
+            'mode en texte' => ['cre', 'starts_with', ['Crème brûlée']],
             'aucun résultat' => ['introuvable', Mode::Contains, []],
         ];
     }

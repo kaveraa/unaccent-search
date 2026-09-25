@@ -53,7 +53,7 @@ Prérequis : PHP 8.2 ou plus, avec l'extension `mbstring`.
 
 | Framework | Versions supportées |
 |---|---|
-| Laravel | 11, 12 |
+| Laravel | 12, 13 |
 | Symfony | 6.4, 7.x, 8.x (avec DoctrineBundle 2.13+ ou 3.x ; testé en CI à partir de 7.2) |
 | Doctrine ORM | 3.x (DBAL 4) |
 
@@ -115,24 +115,24 @@ Product::whereAnyLikeUnaccent(['name', 'commercial_name', 'code'], $request->sea
 
 > **Attention :** une expression `DB::raw()` est insérée telle quelle dans la requête : n'y mettez jamais de saisie utilisateur. Les noms de colonnes en texte sont vérifiés, et un nom invalide lève une `InvalidArgumentException`.
 
-### Exemple : filtres de datatable
+### Exemple : formulaire de recherche
 
-Les conditions historiques des datatables (`contain`, `start_with`, `end_with`, `equal`) sont acceptées telles quelles comme mode :
+Le mode peut venir directement de la requête, validé avec `Rule::enum()` :
 
 ```php
-public function scopeFilterString(Builder $query, array $search): void
+use Illuminate\Validation\Rule;
+use Kaveraa\UnaccentSearch\Mode;
+
+public function index(Request $request)
 {
-    match ($search['condition']) {
-        'contain', 'start_with', 'end_with', 'equal'
-            => $query->whereLikeUnaccent($search['field'], $search['value'], $search['condition']),
-        'not_contain'
-            => $query->whereNotLikeUnaccent($search['field'], $search['value']),
-        'not_equal'
-            => $query->whereNotLikeUnaccent($search['field'], $search['value'], Mode::Exact),
-        'is_null' => $query->whereNull($search['field']),
-        'is_not_null' => $query->whereNotNull($search['field']),
-        default => null,
-    };
+    $validated = $request->validate([
+        'q' => ['nullable', 'string', 'max:100'],
+        'mode' => ['nullable', Rule::enum(Mode::class)], // contains, starts_with, ends_with, exact
+    ]);
+
+    return Product::query()
+        ->whereAnyLikeUnaccent(['name', 'code'], $validated['q'] ?? null, $validated['mode'] ?? Mode::Contains)
+        ->paginate();
 }
 ```
 
@@ -264,10 +264,10 @@ Le mode se passe sous forme d'enum `Kaveraa\UnaccentSearch\Mode` ou de texte.
 
 | Mode | Texte accepté | Motif généré pour `Élève` | Trouve |
 |---|---|---|---|
-| `Mode::Contains` *(défaut)* | `contains`, `contain` | `%eleve%` | "Un **élève** motivé" |
-| `Mode::StartsWith` | `starts_with`, `start_with` | `eleve%` | "**Élève**s de CM2" |
-| `Mode::EndsWith` | `ends_with`, `end_with` | `%eleve` | "Nouvel **élève**" |
-| `Mode::Exact` | `exact`, `equal` | `eleve` | "**ÉLÈVE**" uniquement |
+| `Mode::Contains` *(défaut)* | `contains` | `%eleve%` | "Un **élève** motivé" |
+| `Mode::StartsWith` | `starts_with` | `eleve%` | "**Élève**s de CM2" |
+| `Mode::EndsWith` | `ends_with` | `%eleve` | "Nouvel **élève**" |
+| `Mode::Exact` | `exact` | `eleve` | "**ÉLÈVE**" uniquement |
 
 ```php
 use Kaveraa\UnaccentSearch\Mode;

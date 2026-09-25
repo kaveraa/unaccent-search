@@ -52,15 +52,19 @@ final class SqlExpressionTest extends TestCase
         SqlExpression::wrap('[name]', 'sqlsrv');
     }
 
-    public function test_mode_resolve_accepte_les_alias_de_datatable(): void
+    public function test_mode_resolve_accepte_l_enum_ou_sa_valeur_texte(): void
     {
-        self::assertSame(Mode::Contains, Mode::resolve('contain'));
-        self::assertSame(Mode::StartsWith, Mode::resolve('start_with'));
-        self::assertSame(Mode::EndsWith, Mode::resolve('end_with'));
-        self::assertSame(Mode::Exact, Mode::resolve('equal'));
+        self::assertSame(Mode::Contains, Mode::resolve('contains'));
+        self::assertSame(Mode::StartsWith, Mode::resolve('starts_with'));
+        self::assertSame(Mode::EndsWith, Mode::resolve('ends_with'));
+        self::assertSame(Mode::Exact, Mode::resolve('exact'));
         self::assertSame(Mode::Exact, Mode::resolve(Mode::Exact));
+    }
 
+    public function test_mode_resolve_refuse_une_valeur_inconnue(): void
+    {
         $this->expectException(\ValueError::class);
-        Mode::resolve('nimporte');
+
+        Mode::resolve('anywhere');
     }
 }
