@@ -2,7 +2,7 @@
 
 [![Tests](https://github.com/kaveraa/unaccent-search/actions/workflows/tests.yml/badge.svg)](https://github.com/kaveraa/unaccent-search/actions/workflows/tests.yml)
 [![Packagist](https://img.shields.io/packagist/v/kaveraa/unaccent-search.svg)](https://packagist.org/packages/kaveraa/unaccent-search)
-[![Licence](https://img.shields.io/packagist/l/kaveraa/unaccent-search.svg)](LICENSE)
+[![Licence](https://img.shields.io/github/license/kaveraa/unaccent-search.svg)](LICENSE)
 
 **Français** - [English](https://github.com/kaveraa/unaccent-search/blob/main/README.en.md)
 
