@@ -1,8 +1,12 @@
 # Unaccent Search
 
+<p align="center"><img src="https://raw.githubusercontent.com/kaveraa/unaccent-search/main/art/banner.svg" alt="Unaccent Search" width="100%"></p>
+
 [![Tests](https://github.com/kaveraa/unaccent-search/actions/workflows/tests.yml/badge.svg)](https://github.com/kaveraa/unaccent-search/actions/workflows/tests.yml)
 [![Packagist](https://img.shields.io/packagist/v/kaveraa/unaccent-search.svg)](https://packagist.org/packages/kaveraa/unaccent-search)
-[![License](https://img.shields.io/github/license/kaveraa/unaccent-search.svg)](LICENSE)
+[![License](https://img.shields.io/github/license/kaveraa/unaccent-search.svg)](https://github.com/kaveraa/unaccent-search/blob/main/LICENSE)
+[![Downloads](https://img.shields.io/packagist/dt/kaveraa/unaccent-search.svg)](https://packagist.org/packages/kaveraa/unaccent-search)
+[![PHP](https://img.shields.io/packagist/dependency-v/kaveraa/unaccent-search/php.svg)](https://packagist.org/packages/kaveraa/unaccent-search)
 
 [Français](https://github.com/kaveraa/unaccent-search/blob/main/README.md) - **English**
 

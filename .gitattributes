@@ -7,3 +7,4 @@
 /.gitignore         export-ignore
 /compose.yaml       export-ignore
 /phpunit.xml.dist   export-ignore
+/art               export-ignore

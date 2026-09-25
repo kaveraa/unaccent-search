@@ -4,6 +4,13 @@
 
 **EN** All important changes of the package are listed here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [semantic versioning](https://semver.org/).
 
+## [1.0.2] - 2026-09-25
+
+### Documentation
+
+- **FR** Bannière en haut des README, badges téléchargements et version de PHP, badge de licence lu depuis GitHub.
+  **EN** Banner at the top of the README files, downloads and PHP version badges, license badge read from GitHub.
+
 ## [1.0.1] - 2026-09-25
 
 ### Corrigé / Fixed
@@ -35,5 +42,6 @@
 - **FR** Table de remplacement extensible via la configuration Laravel, la configuration Symfony ou `Normalizer::extend()`.
   **EN** You can add characters to the replacement table with the Laravel configuration, the Symfony configuration or `Normalizer::extend()`.
 
+[1.0.2]: https://github.com/kaveraa/unaccent-search/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/kaveraa/unaccent-search/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/kaveraa/unaccent-search/releases/tag/v1.0.0
