@@ -50,7 +50,7 @@ Requirements: PHP 8.2 or more, with the `mbstring` extension.
 | Framework | Supported versions |
 |---|---|
 | Laravel | 11, 12 |
-| Symfony | 6.4, 7.x, 8.x (with DoctrineBundle 2.13+ or 3.x) |
+| Symfony | 6.4, 7.x, 8.x (with DoctrineBundle 2.13+ or 3.x; tested in CI from 7.2) |
 | Doctrine ORM | 3.x (DBAL 4) |
 
 ---

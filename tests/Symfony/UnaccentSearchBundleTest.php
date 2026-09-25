@@ -19,6 +19,14 @@ final class UnaccentSearchBundleTest extends TestCase
 {
     private ?TestKernel $kernel = null;
 
+    /** @var callable|null gestionnaire d'exceptions actif avant le démarrage du kernel */
+    private mixed $exceptionHandler = null;
+
+    protected function setUp(): void
+    {
+        $this->exceptionHandler = self::currentExceptionHandler();
+    }
+
     protected function tearDown(): void
     {
         if ($this->kernel !== null) {
@@ -26,6 +34,20 @@ final class UnaccentSearchBundleTest extends TestCase
             $this->kernel->shutdown();
         }
         Normalizer::reset();
+
+        // Certaines versions de Symfony (7.2) installent un gestionnaire d'exceptions au démarrage
+        // du kernel sans le retirer : on revient à celui d'avant, comme KernelTestCase.
+        while (self::currentExceptionHandler() !== $this->exceptionHandler) {
+            restore_exception_handler();
+        }
+    }
+
+    private static function currentExceptionHandler(): mixed
+    {
+        $handler = set_exception_handler(null);
+        restore_exception_handler();
+
+        return $handler;
     }
 
     public function test_la_fonction_dql_est_enregistree_automatiquement(): void
