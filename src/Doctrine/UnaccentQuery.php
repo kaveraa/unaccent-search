@@ -22,14 +22,14 @@ use Kaveraa\UnaccentSearch\Normalizer;
 final class UnaccentQuery
 {
     /**
-     * Champ DQL accepté : « alias.champ » ou « alias.embedded.champ ».
+     * Champ DQL accepté : "alias.champ" ou "alias.embedded.champ".
      */
     private const FIELD_PATTERN = '/^[A-Za-z_][A-Za-z0-9_]*(\.[A-Za-z_][A-Za-z0-9_]*)+$/';
 
     private static int $parameterCounter = 0;
 
     /**
-     * Ajoute « AND champ ressemble au terme ».
+     * Ajoute "AND champ ressemble au terme".
      */
     public static function andWhereLike(QueryBuilder $qb, string $field, ?string $term, Mode|string $mode = Mode::Contains): QueryBuilder
     {
@@ -39,7 +39,7 @@ final class UnaccentQuery
     }
 
     /**
-     * Ajoute « OR champ ressemble au terme ».
+     * Ajoute "OR champ ressemble au terme".
      */
     public static function orWhereLike(QueryBuilder $qb, string $field, ?string $term, Mode|string $mode = Mode::Contains): QueryBuilder
     {
@@ -49,7 +49,7 @@ final class UnaccentQuery
     }
 
     /**
-     * Ajoute « AND champ ne ressemble pas au terme ».
+     * Ajoute "AND champ ne ressemble pas au terme".
      */
     public static function andWhereNotLike(QueryBuilder $qb, string $field, ?string $term, Mode|string $mode = Mode::Contains): QueryBuilder
     {
@@ -59,7 +59,7 @@ final class UnaccentQuery
     }
 
     /**
-     * Ajoute « AND (champ1 ressemble au terme OR champ2 ressemble au terme ...) » :
+     * Ajoute "AND (champ1 ressemble au terme OR champ2 ressemble au terme ...)" :
      * idéal pour un champ de recherche global.
      *
      * @param list<string> $fields

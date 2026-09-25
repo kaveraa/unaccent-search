@@ -121,7 +121,7 @@ final class LaravelTest extends TestCase
 
     public function test_whereAnyLikeUnaccent_cherche_dans_plusieurs_colonnes(): void
     {
-        // « francais » est dans code (Français), « eleve » dans name
+        // "francais" est dans code (Français), "eleve" dans name
         $names = Product::whereAnyLikeUnaccent(['name', 'code'], 'francais')->pluck('name')->all();
         self::assertSame(['Garçon'], $names);
 

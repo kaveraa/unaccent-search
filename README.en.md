@@ -4,7 +4,7 @@
 [![Packagist](https://img.shields.io/packagist/v/kaveraa/unaccent-search.svg)](https://packagist.org/packages/kaveraa/unaccent-search)
 [![License](https://img.shields.io/packagist/l/kaveraa/unaccent-search.svg)](LICENSE)
 
-🇫🇷 [Français](https://github.com/kaveraa/unaccent-search/blob/main/README.md) · 🇬🇧 **English**
+[Français](https://github.com/kaveraa/unaccent-search/blob/main/README.md) - **English**
 
 SQL search **without accents and without case** for **Laravel** and **Symfony / Doctrine**.
 
@@ -18,11 +18,11 @@ Product::whereLikeUnaccent('name', $request->search)->get();
 UnaccentQuery::andWhereLike($qb, 'p.name', $search);
 ```
 
-- ✅ **No database extension**: you do not need `unaccent` or a special collation.
-- ✅ **MySQL, MariaDB, PostgreSQL and SQLite**: the same code works on all of them.
-- ✅ **Easy to install**: with Laravel, `composer require` is enough. With Symfony, add one line in `bundles.php`.
-- ✅ **Secure**: the search term is always a bound parameter, column names are checked, and `%` and `_` typed by the user are searched as normal characters.
-- ✅ **An empty search does not filter**: you can pass `$request->search` directly, even when it is `null`.
+- **No database extension**: you do not need `unaccent` or a special collation.
+- **MySQL, MariaDB, PostgreSQL and SQLite**: the same code works on all of them.
+- **Easy to install**: with Laravel, `composer require` is enough. With Symfony, add one line in `bundles.php`.
+- **Secure**: the search term is always a bound parameter, column names are checked, and `%` and `_` typed by the user are searched as normal characters.
+- **An empty search does not filter**: you can pass `$request->search` directly, even when it is `null`.
 
 ---
 
@@ -83,7 +83,7 @@ $user->orders()->whereLikeUnaccent('reference', $search)->paginate();
 
 ```php
 Product::whereAnyLikeUnaccent(['name', 'commercial_name', 'code'], $request->search)
-    ->where('active', true)   // (name LIKE … OR commercial_name LIKE … OR code LIKE …) AND active = 1
+    ->where('active', true)   // (name LIKE ... OR commercial_name LIKE ... OR code LIKE ...) AND active = 1
     ->paginate();
 ```
 
@@ -95,8 +95,8 @@ Product::whereAnyLikeUnaccent(['name', 'commercial_name', 'code'], $request->sea
 | `orWhereLikeUnaccent($column, $term, $mode)` | `OR column matches the term` |
 | `whereNotLikeUnaccent($column, $term, $mode)` | `AND column does not match the term` |
 | `orWhereNotLikeUnaccent($column, $term, $mode)` | `OR column does not match the term` |
-| `whereAnyLikeUnaccent([$col1, $col2], $term, $mode)` | `AND (col1 matches OR col2 matches …)` |
-| `orWhereAnyLikeUnaccent([$col1, $col2], $term, $mode)` | `OR (col1 matches OR col2 matches …)` |
+| `whereAnyLikeUnaccent([$col1, $col2], $term, $mode)` | `AND (col1 matches OR col2 matches ...)` |
+| `orWhereAnyLikeUnaccent([$col1, $col2], $term, $mode)` | `OR (col1 matches OR col2 matches ...)` |
 
 `$mode` says how the term must match: *contains* (default), *starts with*, *ends with* or *equal*. See [search modes](#search-modes).
 
@@ -109,7 +109,7 @@ Product::whereAnyLikeUnaccent(['name', 'commercial_name', 'code'], $request->sea
 ->whereLikeUnaccent(DB::raw("CONCAT(first_name, ' ', last_name)"), $term) // SQL expression
 ```
 
-> ⚠️ A `DB::raw()` expression is put in the query as it is: never put user input in it. Text column names are checked. An invalid name throws an `InvalidArgumentException`.
+> **Warning:** a `DB::raw()` expression is put in the query as it is: never put user input in it. Text column names are checked. An invalid name throws an `InvalidArgumentException`.
 
 ### Example: datatable filters
 
@@ -196,7 +196,7 @@ class ProductRepository extends ServiceEntityRepository
 | `UnaccentQuery::andWhereLike($qb, 'p.field', $term, $mode = Mode::Contains)` | `AND field matches the term` |
 | `UnaccentQuery::orWhereLike($qb, 'p.field', $term, $mode)` | `OR field matches the term` |
 | `UnaccentQuery::andWhereNotLike($qb, 'p.field', $term, $mode)` | `AND field does not match the term` |
-| `UnaccentQuery::andWhereAnyLike($qb, ['p.a', 'p.b'], $term, $mode)` | `AND (a matches OR b matches …)` |
+| `UnaccentQuery::andWhereAnyLike($qb, ['p.a', 'p.b'], $term, $mode)` | `AND (a matches OR b matches ...)` |
 | `UnaccentQuery::condition($qb, 'p.field', $term, $mode, $not = false)` | Returns the DQL condition (or `null` if the term is empty), to use it as you want |
 
 The parameters are bound automatically, with unique names. So you can call several methods on the same `QueryBuilder`.
@@ -315,7 +315,7 @@ Normalizer::pattern('100%');                     // '%100!%%'  (the % is searche
 use Kaveraa\UnaccentSearch\SqlExpression;
 
 $sql = SqlExpression::wrap('`name`', SqlExpression::MYSQL);
-// REPLACE(REPLACE(… LOWER(CAST(`name` AS CHAR)) …, 'à', 'a') …)
+// REPLACE(REPLACE(... LOWER(CAST(`name` AS CHAR)) ..., 'à', 'a') ...)
 
 $pdo->prepare("SELECT * FROM products WHERE {$sql} LIKE ? ESCAPE '!'")
     ->execute([Normalizer::pattern($search)]);
@@ -328,7 +328,7 @@ $pdo->prepare("SELECT * FROM products WHERE {$sql} LIKE ? ESCAPE '!'")
 The search compares two values that are normalized **in the same way**:
 
 1. **In PHP**, the search term is changed to lower case, the accents are replaced, and the `%` and `_` characters are escaped: `Élève` becomes `%eleve%`.
-2. **In SQL**, the column goes through the same replacement table: `REPLACE(REPLACE(LOWER(name), 'é', 'e'), 'è', 'e')…`.
+2. **In SQL**, the column goes through the same replacement table: `REPLACE(REPLACE(LOWER(name), 'é', 'e'), 'è', 'e')...`.
 3. The comparison uses `LIKE ? ESCAPE '!'`. The term is always a bound parameter.
 
 The same table is used on both sides. So if a character is not in the table (for example `č`), it is searched as it is, and the search still finds it.
@@ -338,7 +338,7 @@ The same table is used on both sides. So if a character is not in the table (for
 ## Limits
 
 - **Performance.** The expression on the column blocks the use of an index: the database reads the whole table. This is not a problem up to a few hundred thousand rows. For bigger tables, store a normalized column (filled with `Normalizer::normalize()`), add an index on it, and search in it.
-- **SQLite.** The SQLite `LOWER()` function only works with ASCII. Upper case accented letters from the table (`É`, `Ç`, `Œ`…) work, but an upper case letter that is not in the table (`Č`, `Ł`) is not changed to lower case. In practice, this only affects tests.
+- **SQLite.** The SQLite `LOWER()` function only works with ASCII. Upper case accented letters from the table (`É`, `Ç`, `Œ`...) work, but an upper case letter that is not in the table (`Č`, `Ł`) is not changed to lower case. In practice, this only affects tests.
 - **MySQL / MariaDB.** With a `utf8mb4_*_ci` collation (the default), MySQL already ignores some accents in `LIKE`. The package then gives the same results, or a few more. With a `_bin` or `_cs` collation, only the package makes the search ignore accents.
 - **Supported databases.** MySQL, MariaDB, PostgreSQL and SQLite. Another database (SQL Server, Oracle) throws an `InvalidArgumentException`.
 

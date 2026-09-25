@@ -30,7 +30,7 @@ final class SqlExpression
             self::MYSQL, self::MARIADB => "LOWER(CAST({$sql} AS CHAR))",
             self::POSTGRESQL, self::SQLITE => "LOWER(CAST({$sql} AS TEXT))",
             default => throw new \InvalidArgumentException(sprintf(
-                'Base de données « %s » non supportée (supportées : mysql, mariadb, pgsql, sqlite).',
+                'Base de données "%s" non supportée (supportées : mysql, mariadb, pgsql, sqlite).',
                 $platform,
             )),
         };
@@ -49,7 +49,7 @@ final class SqlExpression
     {
         $replacements = Normalizer::replacements();
 
-        // Le LOWER() de SQLite ne traite que l'ASCII : « É » resterait « É ».
+        // Le LOWER() de SQLite ne traite que l'ASCII : "É" resterait "É".
         // On ajoute donc aussi les majuscules accentuées à la table.
         if ($platform === self::SQLITE) {
             foreach ($replacements as $from => $to) {

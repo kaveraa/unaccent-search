@@ -112,7 +112,7 @@ final class Normalizer
                 throw new \InvalidArgumentException('Une clé de remplacement ne peut pas être vide.');
             }
             if (str_contains($from.$to, '\\')) {
-                throw new \InvalidArgumentException("Le remplacement « {$from} » ne peut pas contenir d'antislash.");
+                throw new \InvalidArgumentException("Le remplacement \"{$from}\" ne peut pas contenir d'antislash.");
             }
 
             $current[mb_strtolower($from, 'UTF-8')] = $to;

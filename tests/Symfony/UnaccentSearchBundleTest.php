@@ -45,7 +45,7 @@ final class UnaccentSearchBundleTest extends TestCase
             self::assertSame(
                 UnaccentFunction::class,
                 $em->getConfiguration()->getCustomStringFunction('UNACCENT'),
-                "entity manager « {$name} »",
+                "entity manager \"{$name}\"",
             );
         }
     }

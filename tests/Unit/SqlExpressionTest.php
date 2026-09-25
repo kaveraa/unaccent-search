@@ -40,9 +40,10 @@ final class SqlExpressionTest extends TestCase
 
     public function test_les_apostrophes_sont_echappees(): void
     {
-        Normalizer::extend(["’" => "'"]);
+        // Apostrophe typographique (U+2019) remplacée par une apostrophe simple
+        Normalizer::extend(["\u{2019}" => "'"]);
 
-        self::assertStringContainsString("'’', ''''", SqlExpression::wrap('`name`', SqlExpression::MYSQL));
+        self::assertStringContainsString("'\u{2019}', ''''", SqlExpression::wrap('`name`', SqlExpression::MYSQL));
     }
 
     public function test_base_non_supportee(): void

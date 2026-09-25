@@ -23,7 +23,7 @@ use Kaveraa\UnaccentSearch\SqlExpression;
 class UnaccentSearchServiceProvider extends ServiceProvider
 {
     /**
-     * Nom de colonne accepté : « colonne », « table.colonne » ou une clé JSON « colonne->cle->sous_cle ».
+     * Nom de colonne accepté : "colonne", "table.colonne" ou une clé JSON "colonne->cle->sous_cle".
      */
     private const COLUMN_PATTERN = '/^[A-Za-z_][A-Za-z0-9_]*(\.[A-Za-z_][A-Za-z0-9_]*)?(->[A-Za-z0-9_]+)*$/';
 

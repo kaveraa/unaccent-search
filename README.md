@@ -4,7 +4,7 @@
 [![Packagist](https://img.shields.io/packagist/v/kaveraa/unaccent-search.svg)](https://packagist.org/packages/kaveraa/unaccent-search)
 [![Licence](https://img.shields.io/packagist/l/kaveraa/unaccent-search.svg)](LICENSE)
 
-🇫🇷 **Français** · 🇬🇧 [English](https://github.com/kaveraa/unaccent-search/blob/main/README.en.md)
+**Français** - [English](https://github.com/kaveraa/unaccent-search/blob/main/README.en.md)
 
 Recherche SQL **insensible à la casse et aux accents** pour **Laravel** et **Symfony / Doctrine**.
 
@@ -18,11 +18,11 @@ Product::whereLikeUnaccent('name', $request->search)->get();
 UnaccentQuery::andWhereLike($qb, 'p.name', $search);
 ```
 
-- ✅ **Aucune extension de base de données** : pas besoin de `unaccent` ni d'une collation particulière.
-- ✅ **MySQL, MariaDB, PostgreSQL et SQLite** avec le même code.
-- ✅ **Prêt à l'emploi** : `composer require` suffit sous Laravel, une ligne dans `bundles.php` sous Symfony.
-- ✅ **Sécurisé** : le terme recherché est toujours passé en paramètre lié, les noms de colonnes sont vérifiés, et `%` et `_` saisis par l'utilisateur sont cherchés tels quels.
-- ✅ **Un terme vide ne filtre rien** : on peut passer directement `$request->search`, même s'il est `null`.
+- **Aucune extension de base de données** : pas besoin de `unaccent` ni d'une collation particulière.
+- **MySQL, MariaDB, PostgreSQL et SQLite** avec le même code.
+- **Prêt à l'emploi** : `composer require` suffit sous Laravel, une ligne dans `bundles.php` sous Symfony.
+- **Sécurisé** : le terme recherché est toujours passé en paramètre lié, les noms de colonnes sont vérifiés, et `%` et `_` saisis par l'utilisateur sont cherchés tels quels.
+- **Un terme vide ne filtre rien** : on peut passer directement `$request->search`, même s'il est `null`.
 
 ---
 
@@ -83,7 +83,7 @@ $user->orders()->whereLikeUnaccent('reference', $search)->paginate();
 
 ```php
 Product::whereAnyLikeUnaccent(['name', 'commercial_name', 'code'], $request->search)
-    ->where('active', true)   // (name LIKE … OR commercial_name LIKE … OR code LIKE …) AND active = 1
+    ->where('active', true)   // (name LIKE ... OR commercial_name LIKE ... OR code LIKE ...) AND active = 1
     ->paginate();
 ```
 
@@ -95,8 +95,8 @@ Product::whereAnyLikeUnaccent(['name', 'commercial_name', 'code'], $request->sea
 | `orWhereLikeUnaccent($colonne, $terme, $mode)` | `OR colonne ressemble au terme` |
 | `whereNotLikeUnaccent($colonne, $terme, $mode)` | `AND colonne ne ressemble pas au terme` |
 | `orWhereNotLikeUnaccent($colonne, $terme, $mode)` | `OR colonne ne ressemble pas au terme` |
-| `whereAnyLikeUnaccent([$col1, $col2], $terme, $mode)` | `AND (col1 ressemble OR col2 ressemble …)` |
-| `orWhereAnyLikeUnaccent([$col1, $col2], $terme, $mode)` | `OR (col1 ressemble OR col2 ressemble …)` |
+| `whereAnyLikeUnaccent([$col1, $col2], $terme, $mode)` | `AND (col1 ressemble OR col2 ressemble ...)` |
+| `orWhereAnyLikeUnaccent([$col1, $col2], $terme, $mode)` | `OR (col1 ressemble OR col2 ressemble ...)` |
 
 `$mode` indique comment le terme doit correspondre : *contient* (par défaut), *commence par*, *se termine par* ou *égal*. Voir [les modes de recherche](#les-modes-de-recherche).
 
@@ -109,7 +109,7 @@ Product::whereAnyLikeUnaccent(['name', 'commercial_name', 'code'], $request->sea
 ->whereLikeUnaccent(DB::raw("CONCAT(first_name, ' ', last_name)"), $terme) // expression SQL
 ```
 
-> ⚠️ Une expression `DB::raw()` est insérée telle quelle dans la requête : n'y mettez jamais de saisie utilisateur. Les noms de colonnes en texte sont vérifiés, et un nom invalide lève une `InvalidArgumentException`.
+> **Attention :** une expression `DB::raw()` est insérée telle quelle dans la requête : n'y mettez jamais de saisie utilisateur. Les noms de colonnes en texte sont vérifiés, et un nom invalide lève une `InvalidArgumentException`.
 
 ### Exemple : filtres de datatable
 
@@ -196,7 +196,7 @@ class ProductRepository extends ServiceEntityRepository
 | `UnaccentQuery::andWhereLike($qb, 'p.champ', $terme, $mode = Mode::Contains)` | `AND champ ressemble au terme` |
 | `UnaccentQuery::orWhereLike($qb, 'p.champ', $terme, $mode)` | `OR champ ressemble au terme` |
 | `UnaccentQuery::andWhereNotLike($qb, 'p.champ', $terme, $mode)` | `AND champ ne ressemble pas au terme` |
-| `UnaccentQuery::andWhereAnyLike($qb, ['p.a', 'p.b'], $terme, $mode)` | `AND (a ressemble OR b ressemble …)` |
+| `UnaccentQuery::andWhereAnyLike($qb, ['p.a', 'p.b'], $terme, $mode)` | `AND (a ressemble OR b ressemble ...)` |
 | `UnaccentQuery::condition($qb, 'p.champ', $terme, $mode, $not = false)` | Retourne la condition DQL (ou `null` si le terme est vide) pour la combiner librement |
 
 Les paramètres sont liés automatiquement, avec des noms uniques. Vous pouvez donc appeler plusieurs méthodes sur le même `QueryBuilder`.
@@ -252,10 +252,10 @@ Le mode se passe sous forme d'enum `Kaveraa\UnaccentSearch\Mode` ou de texte.
 
 | Mode | Texte accepté | Motif généré pour `Élève` | Trouve |
 |---|---|---|---|
-| `Mode::Contains` *(défaut)* | `contains`, `contain` | `%eleve%` | « Un **élève** motivé » |
-| `Mode::StartsWith` | `starts_with`, `start_with` | `eleve%` | « **Élève**s de CM2 » |
-| `Mode::EndsWith` | `ends_with`, `end_with` | `%eleve` | « Nouvel **élève** » |
-| `Mode::Exact` | `exact`, `equal` | `eleve` | « **ÉLÈVE** » uniquement |
+| `Mode::Contains` *(défaut)* | `contains`, `contain` | `%eleve%` | "Un **élève** motivé" |
+| `Mode::StartsWith` | `starts_with`, `start_with` | `eleve%` | "**Élève**s de CM2" |
+| `Mode::EndsWith` | `ends_with`, `end_with` | `%eleve` | "Nouvel **élève**" |
+| `Mode::Exact` | `exact`, `equal` | `eleve` | "**ÉLÈVE**" uniquement |
 
 ```php
 use Kaveraa\UnaccentSearch\Mode;
@@ -315,7 +315,7 @@ Normalizer::pattern('100%');                     // '%100!%%'  (le % est cherch�
 use Kaveraa\UnaccentSearch\SqlExpression;
 
 $sql = SqlExpression::wrap('`name`', SqlExpression::MYSQL);
-// REPLACE(REPLACE(… LOWER(CAST(`name` AS CHAR)) …, 'à', 'a') …)
+// REPLACE(REPLACE(... LOWER(CAST(`name` AS CHAR)) ..., 'à', 'a') ...)
 
 $pdo->prepare("SELECT * FROM products WHERE {$sql} LIKE ? ESCAPE '!'")
     ->execute([Normalizer::pattern($search)]);
@@ -328,7 +328,7 @@ $pdo->prepare("SELECT * FROM products WHERE {$sql} LIKE ? ESCAPE '!'")
 La recherche compare deux valeurs normalisées **de la même façon** :
 
 1. **Côté PHP**, le terme saisi est mis en minuscules, ses accents sont remplacés, puis les jokers `%` et `_` sont échappés : `Élève` devient `%eleve%`.
-2. **Côté SQL**, la colonne passe dans la même table de remplacement : `REPLACE(REPLACE(LOWER(name), 'é', 'e'), 'è', 'e')…`.
+2. **Côté SQL**, la colonne passe dans la même table de remplacement : `REPLACE(REPLACE(LOWER(name), 'é', 'e'), 'è', 'e')...`.
 3. La comparaison se fait avec `LIKE ? ESCAPE '!'`, et le terme est toujours un paramètre lié.
 
 Comme la même table sert des deux côtés, la recherche d'un caractère absent de la table (par exemple `č`) le cherche tel quel au lieu de ne rien trouver.
@@ -338,7 +338,7 @@ Comme la même table sert des deux côtés, la recherche d'un caractère absent 
 ## Limites à connaître
 
 - **Performances.** L'expression appliquée à la colonne empêche l'utilisation d'un index : la base parcourt toute la table. C'est sans importance jusqu'à quelques centaines de milliers de lignes. Au-delà, stockez plutôt une colonne déjà normalisée (remplie avec `Normalizer::normalize()`), indexez-la et cherchez dedans.
-- **SQLite.** Le `LOWER()` de SQLite ne traite que l'ASCII. Les majuscules accentuées de la table (`É`, `Ç`, `Œ`…) sont gérées, mais une majuscule hors table (`Č`, `Ł`) n'est pas mise en minuscule. Cela ne concerne en pratique que les tests.
+- **SQLite.** Le `LOWER()` de SQLite ne traite que l'ASCII. Les majuscules accentuées de la table (`É`, `Ç`, `Œ`...) sont gérées, mais une majuscule hors table (`Č`, `Ł`) n'est pas mise en minuscule. Cela ne concerne en pratique que les tests.
 - **MySQL / MariaDB.** Avec une collation `utf8mb4_*_ci` (le cas par défaut), MySQL ignore déjà certains accents dans `LIKE`. Le paquet donne alors les mêmes résultats, ou un peu plus. Avec une collation `_bin` ou `_cs`, seul le paquet rend la recherche insensible aux accents.
 - **Bases supportées.** MySQL, MariaDB, PostgreSQL et SQLite. Une autre base (SQL Server, Oracle) lève une `InvalidArgumentException`.
 

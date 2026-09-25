@@ -123,7 +123,7 @@ final class DoctrineTest extends DoctrineTestCase
     public function test_remplacements_supplementaires(): void
     {
         // Avec la collation par défaut de MySQL/MariaDB (utf8mb4_*_ci), LIKE ignore déjà les accents :
-        // « č » est alors trouvé même sans remplacement supplémentaire.
+        // "č" est alors trouvé même sans remplacement supplémentaire.
         if (! in_array(TestDatabase::driver(), ['mysql', 'mariadb'], true)) {
             $qb = $this->products();
             UnaccentQuery::andWhereLike($qb, 'p.name', 'caj');
