@@ -28,26 +28,22 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: secret
           MYSQL_DATABASE: unaccent_search
-        ports: ['33306:3306']
+        ports: ['3306']
         options: --health-cmd="mysqladmin ping -psecret" --health-interval=5s --health-timeout=5s --health-retries=20
       mariadb:
         image: mariadb:11
         env:
           MARIADB_ROOT_PASSWORD: secret
           MARIADB_DATABASE: unaccent_search
-        ports: ['33307:3306']
+        ports: ['3306']
         options: --health-cmd="healthcheck.sh --connect --innodb_initialized" --health-interval=5s --health-timeout=5s --health-retries=20
       pgsql:
         image: postgres:17
         env:
           POSTGRES_PASSWORD: secret
           POSTGRES_DB: unaccent_search
-        ports: ['35432:5432']
+        ports: ['5432']
         options: --health-cmd=pg_isready --health-interval=5s --health-timeout=5s --health-retries=20
-
-    env:
-      UNACCENT_DB: ${{ matrix.db }}
-      UNACCENT_DB_PORT: ${{ matrix.db == 'mysql' && '33306' || matrix.db == 'mariadb' && '33307' || matrix.db == 'pgsql' && '35432' || '' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -62,4 +58,8 @@ jobs:
         with:
           dependency-versions: ${{ matrix.dependencies }}
 
+      # Les ports sont choisis par Docker pour éviter les conflits sur le runner
       - run: vendor/bin/phpunit
+        env:
+          UNACCENT_DB: ${{ matrix.db }}
+          UNACCENT_DB_PORT: ${{ matrix.db == 'mysql' && job.services.mysql.ports['3306'] || matrix.db == 'mariadb' && job.services.mariadb.ports['3306'] || matrix.db == 'pgsql' && job.services.pgsql.ports['5432'] || '' }}
