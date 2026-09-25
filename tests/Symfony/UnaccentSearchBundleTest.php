@@ -11,6 +11,7 @@ use Kaveraa\UnaccentSearch\Doctrine\UnaccentQuery;
 use Kaveraa\UnaccentSearch\Normalizer;
 use Kaveraa\UnaccentSearch\Tests\Doctrine\DoctrineTestCase;
 use Kaveraa\UnaccentSearch\Tests\Doctrine\Entity\Product;
+use Kaveraa\UnaccentSearch\Tests\Support\TestDatabase;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -33,6 +34,18 @@ final class UnaccentSearchBundleTest extends TestCase
 
         self::assertSame(UnaccentFunction::class, $em->getConfiguration()->getCustomStringFunction('UNACCENT'));
         self::assertSame(['Élève', 'eleve'], $this->search($em, 'ELEVE'));
+    }
+
+    public function test_le_middleware_sqlite_est_enregistre(): void
+    {
+        if (TestDatabase::driver() !== 'sqlite') {
+            self::markTestSkipped('Concerne uniquement SQLite.');
+        }
+
+        $connection = $this->boot(new TestKernel())->getConnection();
+
+        // Requête SQL directe, sans passer par la fonction DQL : seul le middleware a pu enregistrer la fonction
+        self::assertSame('eleve', $connection->fetchOne("SELECT unaccent_search('Élève')"));
     }
 
     public function test_plusieurs_entity_managers(): void

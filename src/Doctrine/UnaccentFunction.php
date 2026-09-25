@@ -15,6 +15,7 @@ use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 use Doctrine\ORM\Query\TokenType;
 use Kaveraa\UnaccentSearch\SqlExpression;
+use Kaveraa\UnaccentSearch\SqliteFunction;
 
 /**
  * Fonction DQL UNACCENT(expression) : ramène une valeur en minuscules sans accents.
@@ -48,7 +49,17 @@ final class UnaccentFunction extends FunctionNode
             ? $this->expression->dispatch($sqlWalker)
             : $this->expression;
 
-        return SqlExpression::wrap($sql, self::platformName($sqlWalker->getConnection()->getDatabasePlatform()));
+        $connection = $sqlWalker->getConnection();
+        $platform = self::platformName($connection->getDatabasePlatform());
+
+        if ($platform === SqlExpression::SQLITE) {
+            $native = $connection->getNativeConnection();
+            if ($native instanceof \PDO || $native instanceof \SQLite3) {
+                SqliteFunction::register($native);
+            }
+        }
+
+        return SqlExpression::wrap($sql, $platform);
     }
 
     private static function platformName(AbstractPlatform $platform): string

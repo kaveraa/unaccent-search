@@ -10,7 +10,8 @@ namespace Kaveraa\UnaccentSearch;
  *     REPLACE(REPLACE(LOWER(CAST(colonne AS CHAR)), 'à', 'a'), 'é', 'e')...
  *
  * Aucune extension de base de données n'est nécessaire (pas de unaccent, pas de collation
- * particulière) : la même requête fonctionne sur MySQL, MariaDB, PostgreSQL et SQLite.
+ * particulière) sur MySQL, MariaDB et PostgreSQL. Sous SQLite, l'expression appelle la
+ * fonction unaccent_search(), à enregistrer sur la connexion avec SqliteFunction::register().
  */
 final class SqlExpression
 {
@@ -28,39 +29,24 @@ final class SqlExpression
     {
         $expression = match ($platform) {
             self::MYSQL, self::MARIADB => "LOWER(CAST({$sql} AS CHAR))",
-            self::POSTGRESQL, self::SQLITE => "LOWER(CAST({$sql} AS TEXT))",
+            self::POSTGRESQL => "LOWER(CAST({$sql} AS TEXT))",
+            // Trop de REPLACE() imbriqués font échouer SQLite : une fonction PHP fait le travail
+            self::SQLITE => SqliteFunction::NAME."(CAST({$sql} AS TEXT))",
             default => throw new \InvalidArgumentException(sprintf(
                 'Base de données "%s" non supportée (supportées : mysql, mariadb, pgsql, sqlite).',
                 $platform,
             )),
         };
 
-        foreach (self::replacementsFor($platform) as $from => $to) {
+        if ($platform === self::SQLITE) {
+            return $expression;
+        }
+
+        foreach (Normalizer::replacements() as $from => $to) {
             $expression = sprintf('REPLACE(%s, %s, %s)', $expression, self::quote($from), self::quote($to));
         }
 
         return $expression;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    private static function replacementsFor(string $platform): array
-    {
-        $replacements = Normalizer::replacements();
-
-        // Le LOWER() de SQLite ne traite que l'ASCII : "É" resterait "É".
-        // On ajoute donc aussi les majuscules accentuées à la table.
-        if ($platform === self::SQLITE) {
-            foreach ($replacements as $from => $to) {
-                $upper = mb_strtoupper($from, 'UTF-8');
-                if ($upper !== $from && mb_strlen($upper, 'UTF-8') === 1) {
-                    $replacements[$upper] = $to;
-                }
-            }
-        }
-
-        return $replacements;
     }
 
     private static function quote(string $value): string

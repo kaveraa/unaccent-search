@@ -30,12 +30,10 @@ final class SqlExpressionTest extends TestCase
         self::assertStringContainsString('LOWER(CAST("name" AS TEXT))', SqlExpression::wrap('"name"', SqlExpression::POSTGRESQL));
     }
 
-    public function test_sqlite_ajoute_les_majuscules_accentuees(): void
+    public function test_sqlite_utilise_la_fonction_php_sans_replace(): void
     {
-        $sql = SqlExpression::wrap('"name"', SqlExpression::SQLITE);
-
-        self::assertStringContainsString("'É', 'e'", $sql);
-        self::assertStringContainsString("'Œ', 'oe'", $sql);
+        // Des REPLACE() imbriqués provoquent "parser stack overflow" sur SQLite < 3.46
+        self::assertSame('unaccent_search(CAST("name" AS TEXT))', SqlExpression::wrap('"name"', SqlExpression::SQLITE));
     }
 
     public function test_les_apostrophes_sont_echappees(): void

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kaveraa\UnaccentSearch\Symfony;
 
+use Kaveraa\UnaccentSearch\Doctrine\SqliteMiddleware;
 use Kaveraa\UnaccentSearch\Doctrine\UnaccentFunction;
 use Kaveraa\UnaccentSearch\Normalizer;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
@@ -12,7 +13,8 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 /**
- * Bundle Symfony : enregistre la fonction DQL UNACCENT auprès de DoctrineBundle.
+ * Bundle Symfony : enregistre la fonction DQL UNACCENT auprès de DoctrineBundle,
+ * et le middleware SQLite (voir SqliteMiddleware).
  *
  * Activation dans config/bundles.php :
  *
@@ -47,6 +49,11 @@ final class UnaccentSearchBundle extends AbstractBundle
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
         $container->parameters()->set('unaccent_search.replacements', $config['replacements']);
+
+        // Enregistre unaccent_search() sur les connexions SQLite (sans effet sur les autres bases)
+        $container->services()
+            ->set('unaccent_search.sqlite_middleware', SqliteMiddleware::class)
+            ->tag('doctrine.middleware');
     }
 
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void

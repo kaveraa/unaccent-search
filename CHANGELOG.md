@@ -4,6 +4,18 @@
 
 **EN** All important changes of the package are listed here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [semantic versioning](https://semver.org/).
 
+## [1.0.1] - 2026-09-25
+
+### Corrigé / Fixed
+
+- **FR** SQLite : la recherche échouait avec "parser stack overflow" sur SQLite avant 3.46 (trop de `REPLACE()` imbriqués). Sous SQLite, la normalisation passe maintenant par une fonction PHP `unaccent_search()`, enregistrée automatiquement (Laravel, Doctrine, middleware `SqliteMiddleware` ajouté par le bundle Symfony). Les majuscules hors table (`Č`, `Ł`) sont aussi gérées.
+  **EN** SQLite: the search failed with "parser stack overflow" on SQLite before 3.46 (too many nested `REPLACE()`). With SQLite, the normalization now uses a PHP function `unaccent_search()`, registered automatically (Laravel, Doctrine, `SqliteMiddleware` added by the Symfony bundle). Upper case letters that are not in the table (`Č`, `Ł`) also work now.
+
+### Ajouté / Added
+
+- **FR** `SqliteFunction::register()` pour une connexion SQLite utilisée à la main, et `Doctrine\SqliteMiddleware` pour Doctrine sans Symfony.
+  **EN** `SqliteFunction::register()` for a SQLite connection used directly, and `Doctrine\SqliteMiddleware` for Doctrine without Symfony.
+
 ## [1.0.0] - 2026-09-25
 
 ### Ajouté / Added
@@ -23,4 +35,5 @@
 - **FR** Table de remplacement extensible via la configuration Laravel, la configuration Symfony ou `Normalizer::extend()`.
   **EN** You can add characters to the replacement table with the Laravel configuration, the Symfony configuration or `Normalizer::extend()`.
 
+[1.0.1]: https://github.com/kaveraa/unaccent-search/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/kaveraa/unaccent-search/releases/tag/v1.0.0

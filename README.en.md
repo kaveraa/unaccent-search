@@ -244,6 +244,14 @@ use Kaveraa\UnaccentSearch\Doctrine\UnaccentFunction;
 $config->addCustomStringFunction(UnaccentFunction::NAME, UnaccentFunction::class);
 ```
 
+With SQLite and a Doctrine query cache, also add the middleware. It prepares each SQLite connection (it does nothing on other databases):
+
+```php
+use Kaveraa\UnaccentSearch\Doctrine\SqliteMiddleware;
+
+$config->setMiddlewares([new SqliteMiddleware()]);
+```
+
 ---
 
 ## Search modes
@@ -291,7 +299,7 @@ use Kaveraa\UnaccentSearch\Normalizer;
 Normalizer::extend(['ł' => 'l', 'š' => 's', 'č' => 'c']);
 ```
 
-Each entry adds one `REPLACE()` to the query. Only add the characters that are in your data.
+With MySQL, MariaDB and PostgreSQL, each entry adds one `REPLACE()` to the query. Only add the characters that are in your data.
 
 ---
 
@@ -321,6 +329,14 @@ $pdo->prepare("SELECT * FROM products WHERE {$sql} LIKE ? ESCAPE '!'")
     ->execute([Normalizer::pattern($search)]);
 ```
 
+With SQLite, the expression calls the `unaccent_search()` function. Register it once on your connection (the Laravel and Doctrine parts of the package do it for you):
+
+```php
+use Kaveraa\UnaccentSearch\SqliteFunction;
+
+SqliteFunction::register($pdo); // PDO, Pdo\Sqlite or SQLite3
+```
+
 ---
 
 ## How it works
@@ -328,7 +344,7 @@ $pdo->prepare("SELECT * FROM products WHERE {$sql} LIKE ? ESCAPE '!'")
 The search compares two values that are normalized **in the same way**:
 
 1. **In PHP**, the search term is changed to lower case, the accents are replaced, and the `%` and `_` characters are escaped: `Élève` becomes `%eleve%`.
-2. **In SQL**, the column goes through the same replacement table: `REPLACE(REPLACE(LOWER(name), 'é', 'e'), 'è', 'e')...`.
+2. **In SQL**, the column goes through the same replacement table: `REPLACE(REPLACE(LOWER(name), 'é', 'e'), 'è', 'e')...`. SQLite does not accept too many nested `REPLACE()`, so with SQLite a PHP function `unaccent_search()` does the same work. It is registered on the connection automatically.
 3. The comparison uses `LIKE ? ESCAPE '!'`. The term is always a bound parameter.
 
 The same table is used on both sides. So if a character is not in the table (for example `č`), it is searched as it is, and the search still finds it.
@@ -338,7 +354,6 @@ The same table is used on both sides. So if a character is not in the table (for
 ## Limits
 
 - **Performance.** The expression on the column blocks the use of an index: the database reads the whole table. This is not a problem up to a few hundred thousand rows. For bigger tables, store a normalized column (filled with `Normalizer::normalize()`), add an index on it, and search in it.
-- **SQLite.** The SQLite `LOWER()` function only works with ASCII. Upper case accented letters from the table (`É`, `Ç`, `Œ`...) work, but an upper case letter that is not in the table (`Č`, `Ł`) is not changed to lower case. In practice, this only affects tests.
 - **MySQL / MariaDB.** With a `utf8mb4_*_ci` collation (the default), MySQL already ignores some accents in `LIKE`. The package then gives the same results, or a few more. With a `_bin` or `_cs` collation, only the package makes the search ignore accents.
 - **Supported databases.** MySQL, MariaDB, PostgreSQL and SQLite. Another database (SQL Server, Oracle) throws an `InvalidArgumentException`.
 

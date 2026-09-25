@@ -10,6 +10,7 @@ use Illuminate\Support\ServiceProvider;
 use Kaveraa\UnaccentSearch\Mode;
 use Kaveraa\UnaccentSearch\Normalizer;
 use Kaveraa\UnaccentSearch\SqlExpression;
+use Kaveraa\UnaccentSearch\SqliteFunction;
 
 /**
  * Ajoute au Query Builder (et donc à Eloquent) des méthodes de recherche
@@ -147,6 +148,14 @@ class UnaccentSearchServiceProvider extends ServiceProvider
             $sql = $grammar->wrap($column);
         }
 
-        return SqlExpression::wrap($sql, $query->getConnection()->getDriverName());
+        $connection = $query->getConnection();
+        $driver = $connection->getDriverName();
+
+        if ($driver === SqlExpression::SQLITE) {
+            SqliteFunction::register($connection->getPdo());
+            SqliteFunction::register($connection->getReadPdo());
+        }
+
+        return SqlExpression::wrap($sql, $driver);
     }
 }
