@@ -4,6 +4,8 @@
 [![Packagist](https://img.shields.io/packagist/v/kaveraa/unaccent-search.svg)](https://packagist.org/packages/kaveraa/unaccent-search)
 [![Licence](https://img.shields.io/packagist/l/kaveraa/unaccent-search.svg)](LICENSE)
 
+🇫🇷 **Français** · 🇬🇧 [English](https://github.com/kaveraa/unaccent-search/blob/main/README.en.md)
+
 Recherche SQL **insensible à la casse et aux accents** pour **Laravel** et **Symfony / Doctrine**.
 
 Un utilisateur qui tape `eleve` trouve `Élève`, `ÉLÈVE` et `élève`. `creme brulee` trouve `Crème brûlée`, et `oeuvre` trouve `Œuvre`.
