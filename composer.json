@@ -28,8 +28,8 @@
     "require-dev": {
         "doctrine/doctrine-bundle": "^2.13 || ^3.0",
         "doctrine/orm": "^3.3",
-        "orchestra/testbench": "^9.0 || ^10.0",
-        "phpunit/phpunit": "^11.0",
+        "orchestra/testbench": "^10.0 || ^11.0",
+        "phpunit/phpunit": "^11.0 || ^12.0",
         "symfony/cache": "^7.2 || ^8.0",
         "symfony/config": "^7.2 || ^8.0",
         "symfony/dependency-injection": "^7.2 || ^8.0",
@@ -38,7 +38,7 @@
         "symfony/http-kernel": "^7.2 || ^8.0"
     },
     "suggest": {
-        "laravel/framework": "Pour les macros whereLikeUnaccent() sur le Query Builder et Eloquent (Laravel 11+)",
+        "laravel/framework": "Pour les macros whereLikeUnaccent() sur le Query Builder et Eloquent (Laravel 12+)",
         "doctrine/orm": "Pour la fonction DQL UNACCENT() et le helper UnaccentQuery (Doctrine ORM 3+)",
         "symfony/http-kernel": "Pour enregistrer automatiquement la fonction DQL via UnaccentSearchBundle"
     },
