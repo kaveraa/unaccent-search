@@ -1,0 +1,69 @@
+{
+    "name": "kaveraa/unaccent-search",
+    "description": "Recherche SQL insensible à la casse et aux accents pour Laravel et Symfony/Doctrine, sans extension de base de données (MySQL, MariaDB, PostgreSQL, SQLite).",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "search",
+        "accent",
+        "unaccent",
+        "diacritics",
+        "like",
+        "laravel",
+        "eloquent",
+        "symfony",
+        "doctrine",
+        "dql"
+    ],
+    "authors": [
+        {
+            "name": "Augustin Kavera",
+            "homepage": "https://github.com/kaveraa"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "ext-mbstring": "*"
+    },
+    "require-dev": {
+        "doctrine/doctrine-bundle": "^2.13 || ^3.0",
+        "doctrine/orm": "^3.3",
+        "orchestra/testbench": "^9.0 || ^10.0",
+        "phpunit/phpunit": "^11.0",
+        "symfony/cache": "^6.4 || ^7.0 || ^8.0",
+        "symfony/config": "^6.4 || ^7.0 || ^8.0",
+        "symfony/dependency-injection": "^6.4 || ^7.0 || ^8.0",
+        "symfony/framework-bundle": "^6.4 || ^7.0 || ^8.0",
+        "symfony/http-kernel": "^6.4 || ^7.0 || ^8.0"
+    },
+    "suggest": {
+        "laravel/framework": "Pour les macros whereLikeUnaccent() sur le Query Builder et Eloquent (Laravel 11+)",
+        "doctrine/orm": "Pour la fonction DQL UNACCENT() et le helper UnaccentQuery (Doctrine ORM 3+)",
+        "symfony/http-kernel": "Pour enregistrer automatiquement la fonction DQL via UnaccentSearchBundle"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kaveraa\\UnaccentSearch\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Kaveraa\\UnaccentSearch\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Kaveraa\\UnaccentSearch\\Laravel\\UnaccentSearchServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

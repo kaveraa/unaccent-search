@@ -1,0 +1,65 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  tests:
+    name: PHP ${{ matrix.php }} · ${{ matrix.db }} · ${{ matrix.dependencies }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+        db: [sqlite, mysql, mariadb, pgsql]
+        dependencies: [highest]
+        include:
+          # Versions minimales supportées : Laravel 11, Symfony 6.4, Doctrine ORM 3.3
+          - { php: '8.2', db: sqlite, dependencies: lowest }
+          - { php: '8.2', db: mysql, dependencies: lowest }
+          - { php: '8.2', db: pgsql, dependencies: lowest }
+
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_DATABASE: unaccent_search
+        ports: ['33306:3306']
+        options: --health-cmd="mysqladmin ping -psecret" --health-interval=5s --health-timeout=5s --health-retries=20
+      mariadb:
+        image: mariadb:11
+        env:
+          MARIADB_ROOT_PASSWORD: secret
+          MARIADB_DATABASE: unaccent_search
+        ports: ['33307:3306']
+        options: --health-cmd="healthcheck.sh --connect --innodb_initialized" --health-interval=5s --health-timeout=5s --health-retries=20
+      pgsql:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: secret
+          POSTGRES_DB: unaccent_search
+        ports: ['35432:5432']
+        options: --health-cmd=pg_isready --health-interval=5s --health-timeout=5s --health-retries=20
+
+    env:
+      UNACCENT_DB: ${{ matrix.db }}
+      UNACCENT_DB_PORT: ${{ matrix.db == 'mysql' && '33306' || matrix.db == 'mariadb' && '33307' || matrix.db == 'pgsql' && '35432' || '' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, pdo_sqlite, pdo_mysql, pdo_pgsql
+          coverage: none
+
+      - uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
+
+      - run: vendor/bin/phpunit
