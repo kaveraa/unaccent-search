@@ -63,3 +63,13 @@ jobs:
         env:
           UNACCENT_DB: ${{ matrix.db }}
           UNACCENT_DB_PORT: ${{ matrix.db == 'mysql' && job.services.mysql.ports['3306'] || matrix.db == 'mariadb' && job.services.mariadb.ports['3306'] || matrix.db == 'pgsql' && job.services.pgsql.ports['5432'] || '' }}
+
+  # Contrôle unique exigé par la protection de la branche main :
+  # il ne passe que si tous les jobs de la matrice ont réussi.
+  tests-passed:
+    name: All tests passed
+    needs: tests
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: test "${{ needs.tests.result }}" = "success"

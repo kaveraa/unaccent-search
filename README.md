@@ -383,6 +383,8 @@ UNACCENT_DB=pgsql UNACCENT_DB_PORT=35432 composer test
 
 La CI GitHub Actions lance la suite sur les quatre bases et plusieurs versions de PHP.
 
+Pour proposer une modification (branche, tests, règles, Pull Request), lisez le guide [CONTRIBUTING.md](https://github.com/kaveraa/unaccent-search/blob/main/CONTRIBUTING.md).
+
 Voir le [CHANGELOG](CHANGELOG.md) pour l'historique des versions.
 
 ## Licence

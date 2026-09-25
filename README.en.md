@@ -383,6 +383,8 @@ UNACCENT_DB=pgsql UNACCENT_DB_PORT=35432 composer test
 
 GitHub Actions runs the tests on the four databases and on several PHP versions.
 
+To propose a change (branch, tests, rules, Pull Request), read the [CONTRIBUTING.md](https://github.com/kaveraa/unaccent-search/blob/main/CONTRIBUTING.md) guide.
+
 See the [CHANGELOG](CHANGELOG.md) for the list of versions.
 
 ## License
