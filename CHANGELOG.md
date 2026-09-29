@@ -4,6 +4,13 @@
 
 **EN** All important changes of the package are listed here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [semantic versioning](https://semver.org/).
 
+## [2.0.1] - 2026-09-29
+
+### Documentation
+
+- **FR** Le README affiché par défaut est maintenant en anglais (`README.md`), le français est dans `README.fr.md`.
+  **EN** The default README is now in English (`README.md`), the French version is in `README.fr.md`.
+
 ## [2.0.0] - 2026-09-25
 
 ### Modifié / Changed (incompatible / breaking)
@@ -56,6 +63,7 @@
 - **FR** Table de remplacement extensible via la configuration Laravel, la configuration Symfony ou `Normalizer::extend()`.
   **EN** You can add characters to the replacement table with the Laravel configuration, the Symfony configuration or `Normalizer::extend()`.
 
+[2.0.1]: https://github.com/kaveraa/unaccent-search/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/kaveraa/unaccent-search/compare/v1.0.2...v2.0.0
 [1.0.2]: https://github.com/kaveraa/unaccent-search/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/kaveraa/unaccent-search/compare/v1.0.0...v1.0.1
