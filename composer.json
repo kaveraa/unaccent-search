@@ -1,6 +1,6 @@
 {
     "name": "kaveraa/unaccent-search",
-    "description": "Recherche SQL insensible à la casse et aux accents pour Laravel et Symfony/Doctrine, sans extension de base de données (MySQL, MariaDB, PostgreSQL, SQLite).",
+    "description": "Search without accents and case in SQL, for Laravel and Symfony/Doctrine (MySQL, MariaDB, PostgreSQL, SQLite)",
     "type": "library",
     "license": "MIT",
     "keywords": [
