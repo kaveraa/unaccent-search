@@ -1,6 +1,6 @@
 # Unaccent Search
 
-<p align="center"><img src="https://raw.githubusercontent.com/kaveraa/unaccent-search/main/art/banner.svg" alt="Unaccent Search" width="100%"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/kaveraa/unaccent-search/1c5765a/art/banner.svg" alt="Unaccent Search" width="100%"></p>
 
 [![Tests](https://github.com/kaveraa/unaccent-search/actions/workflows/tests.yml/badge.svg)](https://github.com/kaveraa/unaccent-search/actions/workflows/tests.yml)
 [![Packagist](https://img.shields.io/packagist/v/kaveraa/unaccent-search.svg)](https://packagist.org/packages/kaveraa/unaccent-search)
