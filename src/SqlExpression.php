@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Kaveraa\UnaccentSearch;
 
 /**
- * Génère l'expression SQL qui ramène une colonne à la même forme que Normalizer::normalize() :
+ * Builds the SQL expression that turns a column into the same form as Normalizer::normalize():
  *
- *     REPLACE(REPLACE(LOWER(CAST(colonne AS CHAR)), 'à', 'a'), 'é', 'e')...
+ *     REPLACE(REPLACE(LOWER(CAST(column AS CHAR)), 'à', 'a'), 'é', 'e')...
  *
- * Aucune extension de base de données n'est nécessaire (pas de unaccent, pas de collation
- * particulière) sur MySQL, MariaDB et PostgreSQL. Sous SQLite, l'expression appelle la
- * fonction unaccent_search(), à enregistrer sur la connexion avec SqliteFunction::register().
+ * No database extension is needed (no unaccent, no special collation)
+ * on MySQL, MariaDB and PostgreSQL. On SQLite, the expression calls the
+ * unaccent_search() function, to register on the connection with SqliteFunction::register().
  */
 final class SqlExpression
 {
@@ -21,16 +21,16 @@ final class SqlExpression
     public const SQLITE = 'sqlite';
 
     /**
-     * @param string $sql      fragment SQL déjà échappé (colonne entre guillemets, expression...).
-     *                         Il est inséré tel quel : il ne doit jamais venir de l'utilisateur.
-     * @param string $platform une des constantes de cette classe
+     * @param string $sql      SQL fragment already escaped (quoted column, expression...).
+     *                         It is inserted as it is: it must never come from the user.
+     * @param string $platform one of the constants of this class
      */
     public static function wrap(string $sql, string $platform): string
     {
         $expression = match ($platform) {
             self::MYSQL, self::MARIADB => "LOWER(CAST({$sql} AS CHAR))",
             self::POSTGRESQL => "LOWER(CAST({$sql} AS TEXT))",
-            // Trop de REPLACE() imbriqués font échouer SQLite : une fonction PHP fait le travail
+            // Too many nested REPLACE() make SQLite fail: a PHP function does the work
             self::SQLITE => SqliteFunction::NAME."(CAST({$sql} AS TEXT))",
             default => throw new \InvalidArgumentException(sprintf(
                 'Base de données "%s" non supportée (supportées : mysql, mariadb, pgsql, sqlite).',

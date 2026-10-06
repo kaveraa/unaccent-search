@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
-  # Permet de relancer la suite à la main sur une branche, depuis l'onglet Actions.
+  # Lets you run the test suite by hand on a branch, from the Actions tab.
   workflow_dispatch:
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
         db: [sqlite, mysql, mariadb, pgsql]
         dependencies: [highest]
         include:
-          # Versions minimales supportées : Laravel 12, Symfony 7.2, Doctrine ORM 3.3
+          # Lowest supported versions: Laravel 12, Symfony 7.2, Doctrine ORM 3.3
           - { php: '8.2', db: sqlite, dependencies: lowest }
           - { php: '8.2', db: mysql, dependencies: lowest }
           - { php: '8.2', db: pgsql, dependencies: lowest }
@@ -60,14 +60,14 @@ jobs:
         with:
           dependency-versions: ${{ matrix.dependencies }}
 
-      # Les ports sont choisis par Docker pour éviter les conflits sur le runner
+      # Docker picks the ports, so they never clash on the runner
       - run: vendor/bin/phpunit
         env:
           UNACCENT_DB: ${{ matrix.db }}
           UNACCENT_DB_PORT: ${{ matrix.db == 'mysql' && job.services.mysql.ports['3306'] || matrix.db == 'mariadb' && job.services.mariadb.ports['3306'] || matrix.db == 'pgsql' && job.services.pgsql.ports['5432'] || '' }}
 
-  # Contrôle unique exigé par la protection de la branche main :
-  # il ne passe que si tous les jobs de la matrice ont réussi.
+  # Single check required by the protection of the main branch:
+  # it passes only if every job of the matrix passed.
   tests-passed:
     name: All tests passed
     needs: tests

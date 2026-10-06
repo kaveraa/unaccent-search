@@ -4,14 +4,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Remplacements supplémentaires
+    | Extra replacements
     |--------------------------------------------------------------------------
     |
-    | Caractères à ajouter à la table par défaut (accents français et européens
-    | courants, ligatures œ/æ, ß...). Clé = caractère en minuscule, valeur = son
-    | équivalent sans accent. Voir Kaveraa\UnaccentSearch\Normalizer::DEFAULT_REPLACEMENTS.
+    | Characters to add to the default table (common French and European
+    | accents, ligatures œ/æ, ß...). Key = lowercase character, value = its
+    | equivalent without accent. See Kaveraa\UnaccentSearch\Normalizer::DEFAULT_REPLACEMENTS.
     |
-    | Exemple : ['ł' => 'l', 'š' => 's', 'ž' => 'z']
+    | Example: ['ł' => 'l', 'š' => 's', 'ž' => 'z']
     |
     */
 

@@ -13,14 +13,14 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 /**
- * Bundle Symfony : enregistre la fonction DQL UNACCENT auprès de DoctrineBundle,
- * et le middleware SQLite (voir SqliteMiddleware).
+ * Symfony bundle: registers the DQL function UNACCENT with DoctrineBundle,
+ * and the SQLite middleware (see SqliteMiddleware).
  *
- * Activation dans config/bundles.php :
+ * Enable it in config/bundles.php:
  *
  *     Kaveraa\UnaccentSearch\Symfony\UnaccentSearchBundle::class => ['all' => true],
  *
- * Configuration facultative (config/packages/unaccent_search.yaml) :
+ * Optional configuration (config/packages/unaccent_search.yaml):
  *
  *     unaccent_search:
  *         replacements: { 'ł': 'l', 'š': 's' }
@@ -50,7 +50,7 @@ final class UnaccentSearchBundle extends AbstractBundle
     {
         $container->parameters()->set('unaccent_search.replacements', $config['replacements']);
 
-        // Enregistre unaccent_search() sur les connexions SQLite (sans effet sur les autres bases)
+        // Registers unaccent_search() on SQLite connections (does nothing on other databases)
         $container->services()
             ->set('unaccent_search.sqlite_middleware', SqliteMiddleware::class)
             ->tag('doctrine.middleware');
@@ -64,8 +64,8 @@ final class UnaccentSearchBundle extends AbstractBundle
 
         $dql = ['string_functions' => [UnaccentFunction::NAME => UnaccentFunction::class]];
 
-        // Avec plusieurs entity managers déclarés, DoctrineBundle refuse une clé dql à la racine de orm :
-        // la fonction est alors ajoutée à chacun d'eux.
+        // With several entity managers declared, DoctrineBundle refuses a dql key at the root of orm:
+        // the function is then added to each of them.
         $entityManagers = [];
         foreach ($builder->getExtensionConfig('doctrine') as $config) {
             foreach (array_keys($config['orm']['entity_managers'] ?? []) as $name) {

@@ -7,8 +7,8 @@ namespace Kaveraa\UnaccentSearch\Tests\Support;
 use Kaveraa\UnaccentSearch\Mode;
 
 /**
- * Jeu de données et cas de recherche partagés par les tests Laravel et Doctrine :
- * les deux ponts doivent donner exactement les mêmes résultats.
+ * Dataset and search cases shared by the Laravel and Doctrine tests:
+ * both bridges must give exactly the same results.
  */
 final class Dataset
 {
@@ -33,7 +33,7 @@ final class Dataset
     }
 
     /**
-     * Recherches sur la colonne name : [terme, mode, noms attendus].
+     * Searches on the name column: [term, mode, expected names].
      *
      * @return array<string, array{0: ?string, 1: Mode|string, 2: list<?string>}>
      */

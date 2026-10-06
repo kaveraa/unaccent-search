@@ -32,13 +32,13 @@ final class SqlExpressionTest extends TestCase
 
     public function test_sqlite_utilise_la_fonction_php_sans_replace(): void
     {
-        // Des REPLACE() imbriqués provoquent "parser stack overflow" sur SQLite < 3.46
+        // Nested REPLACE() cause "parser stack overflow" on SQLite < 3.46
         self::assertSame('unaccent_search(CAST("name" AS TEXT))', SqlExpression::wrap('"name"', SqlExpression::SQLITE));
     }
 
     public function test_les_apostrophes_sont_echappees(): void
     {
-        // Apostrophe typographique (U+2019) remplacée par une apostrophe simple
+        // Typographic apostrophe (U+2019) replaced by a simple apostrophe
         Normalizer::extend(["\u{2019}" => "'"]);
 
         self::assertStringContainsString("'\u{2019}', ''''", SqlExpression::wrap('`name`', SqlExpression::MYSQL));
