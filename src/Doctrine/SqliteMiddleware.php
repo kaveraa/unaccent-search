@@ -11,12 +11,12 @@ use Doctrine\DBAL\Driver\Middleware\AbstractDriverMiddleware;
 use Kaveraa\UnaccentSearch\SqliteFunction;
 
 /**
- * Middleware DBAL : enregistre la fonction unaccent_search() à chaque connexion SQLite.
- * Sans effet sur les autres bases.
+ * DBAL middleware: registers the unaccent_search() function on each SQLite connection.
+ * It does nothing on other databases.
  *
- * Utile sous SQLite quand Doctrine réutilise un SQL mis en cache (query cache) : la fonction
- * DQL UNACCENT() n'est alors pas rappelée et ne peut pas enregistrer la fonction elle-même.
- * Ajouté automatiquement par UnaccentSearchBundle. Sans Symfony :
+ * Useful on SQLite when Doctrine reuses a cached SQL (query cache): the DQL function
+ * UNACCENT() is then not called again and cannot register the function itself.
+ * Added automatically by UnaccentSearchBundle. Without Symfony:
  *
  *     $config->setMiddlewares([new SqliteMiddleware()]);
  */

@@ -18,14 +18,14 @@ use Kaveraa\UnaccentSearch\SqlExpression;
 use Kaveraa\UnaccentSearch\SqliteFunction;
 
 /**
- * Fonction DQL UNACCENT(expression) : ramène une valeur en minuscules sans accents.
+ * DQL function UNACCENT(expression): turns a value into lowercase without accents.
  *
  *     SELECT p FROM App\Entity\Product p WHERE UNACCENT(p.name) LIKE :term ESCAPE '!'
  *
- * Le paramètre :term doit être construit avec Normalizer::pattern(), ou utilisez
- * directement le helper UnaccentQuery.
+ * The :term parameter must be built with Normalizer::pattern(), or use
+ * the UnaccentQuery helper directly.
  *
- * Enregistrement (fait automatiquement par UnaccentSearchBundle sous Symfony) :
+ * Registration (done automatically by UnaccentSearchBundle on Symfony):
  *
  *     $config->addCustomStringFunction('UNACCENT', UnaccentFunction::class);
  */

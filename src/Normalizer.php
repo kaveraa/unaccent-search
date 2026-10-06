@@ -5,22 +5,22 @@ declare(strict_types=1);
 namespace Kaveraa\UnaccentSearch;
 
 /**
- * Ramène un texte à sa forme de recherche : minuscules, sans accents ni ligatures.
+ * Turns a text into its search form: lowercase, without accents or ligatures.
  *
- * C'est la même table de remplacement qui sert côté PHP (terme saisi) et côté SQL
- * (colonne comparée, voir SqlExpression) : les deux côtés sont donc toujours normalisés
- * de façon identique.
+ * The same replacement table is used on the PHP side (typed term) and on the SQL side
+ * (compared column, see SqlExpression): both sides are therefore always normalized
+ * the same way.
  */
 final class Normalizer
 {
     /**
-     * Caractère d'échappement utilisé dans les motifs LIKE générés (clause ESCAPE '!').
-     * Il est choisi parce qu'il s'écrit de la même façon dans toutes les bases supportées.
+     * Escape character used in the generated LIKE patterns (ESCAPE '!' clause).
+     * It was chosen because it is written the same way in all supported databases.
      */
     public const LIKE_ESCAPE = '!';
 
     /**
-     * Remplacements appliqués après la mise en minuscules.
+     * Replacements applied after the text is put in lowercase.
      */
     public const DEFAULT_REPLACEMENTS = [
         'à' => 'a', 'â' => 'a', 'ä' => 'a', 'á' => 'a', 'ã' => 'a', 'å' => 'a',
@@ -41,7 +41,7 @@ final class Normalizer
     private static ?array $replacements = null;
 
     /**
-     * Normalise un texte : minuscules puis suppression des accents et ligatures.
+     * Normalizes a text: lowercase, then removes accents and ligatures.
      *
      *     Normalizer::normalize('Élève Œuvre'); // 'eleve oeuvre'
      */
@@ -51,9 +51,9 @@ final class Normalizer
     }
 
     /**
-     * Construit le motif LIKE à comparer à une colonne passée par SqlExpression.
-     * Les caractères spéciaux saisis par l'utilisateur (%, _) sont échappés : ils sont
-     * recherchés tels quels au lieu de servir de jokers.
+     * Builds the LIKE pattern to compare with a column wrapped by SqlExpression.
+     * Special characters typed by the user (%, _) are escaped: they are
+     * searched as they are instead of acting as wildcards.
      *
      *     Normalizer::pattern('Élève');                  // '%eleve%'
      *     Normalizer::pattern('Élè', Mode::StartsWith);   // 'ele%'
@@ -72,7 +72,7 @@ final class Normalizer
     }
 
     /**
-     * Échappe les jokers LIKE (%, _) et le caractère d'échappement lui-même.
+     * Escapes the LIKE wildcards (%, _) and the escape character itself.
      */
     public static function escapeLike(string $value): string
     {
@@ -82,7 +82,7 @@ final class Normalizer
     }
 
     /**
-     * Table de remplacement active (par défaut + ajouts faits via extend()).
+     * Active replacement table (default + entries added with extend()).
      *
      * @return array<string, string>
      */
@@ -92,13 +92,13 @@ final class Normalizer
     }
 
     /**
-     * Ajoute ou remplace des entrées dans la table de remplacement, par exemple
-     * pour gérer d'autres alphabets. Les clés sont mises en minuscules.
+     * Adds or replaces entries in the replacement table, for example
+     * to handle other alphabets. Keys are put in lowercase.
      *
      *     Normalizer::extend(['ł' => 'l', 'š' => 's']);
      *
-     * À appeler une seule fois au démarrage de l'application (ServiceProvider,
-     * configuration du bundle...), avant toute requête.
+     * Call it only once when the application starts (ServiceProvider,
+     * bundle configuration...), before any query.
      *
      * @param array<string, string> $replacements
      */
@@ -122,7 +122,7 @@ final class Normalizer
     }
 
     /**
-     * Revient à la table par défaut (utile dans les tests).
+     * Goes back to the default table (useful in tests).
      */
     public static function reset(): void
     {

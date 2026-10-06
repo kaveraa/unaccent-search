@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Kaveraa\UnaccentSearch\Tests\Support;
 
 /**
- * Base de données utilisée par les tests d'intégration, choisie par variables d'environnement :
+ * Database used by the integration tests, chosen with environment variables:
  *
- *     UNACCENT_DB=sqlite (défaut, en mémoire) | mysql | mariadb | pgsql
+ *     UNACCENT_DB=sqlite (default, in memory) | mysql | mariadb | pgsql
  *     UNACCENT_DB_HOST, UNACCENT_DB_PORT, UNACCENT_DB_DATABASE, UNACCENT_DB_USERNAME, UNACCENT_DB_PASSWORD
  */
 final class TestDatabase
@@ -34,7 +34,7 @@ final class TestDatabase
     }
 
     /**
-     * Paramètres de connexion Doctrine DBAL.
+     * Doctrine DBAL connection parameters.
      *
      * @return array<string, mixed>
      */
