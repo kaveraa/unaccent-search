@@ -19,7 +19,7 @@ final class UnaccentSearchBundleTest extends TestCase
 {
     private ?TestKernel $kernel = null;
 
-    /** @var callable|null gestionnaire d'exceptions actif avant le démarrage du kernel */
+    /** @var callable|null exception handler active before the kernel boot */
     private mixed $exceptionHandler = null;
 
     protected function setUp(): void
@@ -35,8 +35,8 @@ final class UnaccentSearchBundleTest extends TestCase
         }
         Normalizer::reset();
 
-        // Certaines versions de Symfony (7.2) installent un gestionnaire d'exceptions au démarrage
-        // du kernel sans le retirer : on revient à celui d'avant, comme KernelTestCase.
+        // Some Symfony versions (7.2) install an exception handler when the kernel boots
+        // and do not remove it: we go back to the previous one, like KernelTestCase.
         while (self::currentExceptionHandler() !== $this->exceptionHandler) {
             restore_exception_handler();
         }
@@ -66,7 +66,7 @@ final class UnaccentSearchBundleTest extends TestCase
 
         $connection = $this->boot(new TestKernel())->getConnection();
 
-        // Requête SQL directe, sans passer par la fonction DQL : seul le middleware a pu enregistrer la fonction
+        // Direct SQL query, without the DQL function: only the middleware could have registered the function
         self::assertSame('eleve', $connection->fetchOne("SELECT unaccent_search('Élève')"));
     }
 

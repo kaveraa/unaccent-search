@@ -41,7 +41,7 @@ abstract class DoctrineTestCase extends TestCase
     }
 
     /**
-     * Crée la table products et y insère le jeu de données commun.
+     * Creates the products table and inserts the shared dataset into it.
      */
     public static function seed(EntityManagerInterface $em): void
     {

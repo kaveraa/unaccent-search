@@ -1,4 +1,4 @@
-# Bases de données pour lancer les tests en local (voir README, section Développement).
+# Databases to run the tests on your machine (see README, section Development).
 services:
   mysql:
     image: mysql:8.4

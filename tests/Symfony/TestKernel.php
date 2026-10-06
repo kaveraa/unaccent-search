@@ -13,15 +13,15 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\HttpKernel\Kernel;
 
 /**
- * Application Symfony minimale : FrameworkBundle + DoctrineBundle + UnaccentSearchBundle,
- * sans aucune configuration DQL manuelle.
+ * Minimal Symfony application: FrameworkBundle + DoctrineBundle + UnaccentSearchBundle,
+ * without any manual DQL configuration.
  */
 final class TestKernel extends Kernel
 {
     use MicroKernelTrait;
 
     /**
-     * @param array<string, string> $replacements configuration unaccent_search.replacements
+     * @param array<string, string> $replacements the unaccent_search.replacements configuration
      */
     public function __construct(
         private readonly bool $multipleEntityManagers = false,

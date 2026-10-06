@@ -5,26 +5,26 @@ declare(strict_types=1);
 namespace Kaveraa\UnaccentSearch;
 
 /**
- * Façon dont le terme recherché doit correspondre à la valeur en base.
+ * How the search term must match the value in the database.
  */
 enum Mode: string
 {
-    /** La valeur contient le terme : LIKE '%terme%' (par défaut) */
+    /** The value contains the term: LIKE '%term%' (default) */
     case Contains = 'contains';
 
-    /** La valeur commence par le terme : LIKE 'terme%' */
+    /** The value starts with the term: LIKE 'term%' */
     case StartsWith = 'starts_with';
 
-    /** La valeur se termine par le terme : LIKE '%terme' */
+    /** The value ends with the term: LIKE '%term' */
     case EndsWith = 'ends_with';
 
-    /** La valeur est égale au terme, aux accents et à la casse près : LIKE 'terme' */
+    /** The value equals the term, ignoring accents and case: LIKE 'term' */
     case Exact = 'exact';
 
     /**
-     * Accepte une instance de Mode ou sa valeur texte ('contains', 'starts_with', 'ends_with', 'exact').
+     * Accepts a Mode instance or its text value ('contains', 'starts_with', 'ends_with', 'exact').
      *
-     * @throws \ValueError si le mode est inconnu
+     * @throws \ValueError if the mode is unknown
      */
     public static function resolve(self|string $mode): self
     {

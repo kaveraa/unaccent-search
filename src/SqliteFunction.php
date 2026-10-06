@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Kaveraa\UnaccentSearch;
 
 /**
- * Enregistre la fonction SQL unaccent_search() sur une connexion SQLite.
+ * Registers the SQL function unaccent_search() on a SQLite connection.
  *
- * SQLite n'accepte pas beaucoup de REPLACE() imbriqués (erreur "parser stack overflow"
- * avant la version 3.46) : sous SQLite, la normalisation est donc faite par une fonction
- * PHP, qui appelle Normalizer::normalize().
+ * SQLite does not accept many nested REPLACE() (error "parser stack overflow"
+ * before version 3.46): on SQLite, the normalization is therefore done by a PHP
+ * function, which calls Normalizer::normalize().
  *
- * Les ponts Laravel et Doctrine appellent register() automatiquement. Pour une connexion
- * PDO utilisée à la main :
+ * The Laravel and Doctrine bridges call register() automatically. For a PDO
+ * connection used by hand:
  *
  *     SqliteFunction::register($pdo);
  */
@@ -24,7 +24,7 @@ final class SqliteFunction
     private static ?\WeakMap $registered = null;
 
     /**
-     * @param object $connection \PDO (driver sqlite), \Pdo\Sqlite ou \SQLite3
+     * @param object $connection \PDO (sqlite driver), \Pdo\Sqlite or \SQLite3
      */
     public static function register(object $connection): void
     {
@@ -41,8 +41,8 @@ final class SqliteFunction
         if ($modernPdo && $connection instanceof \Pdo\Sqlite) {
             $connection->createFunction(self::NAME, $callback, 1, $deterministic);
         } elseif ($connection instanceof \PDO) {
-            // Connexion créée avec "new PDO()" (Laravel, Doctrine) : seule la méthode historique existe.
-            // Elle est dépréciée depuis PHP 8.5 sans alternative pour ce type d'objet : l'avertissement est masqué.
+            // Connection created with "new PDO()" (Laravel, Doctrine): only the old method exists.
+            // It is deprecated since PHP 8.5 with no alternative for this kind of object: the warning is hidden.
             @$connection->sqliteCreateFunction(self::NAME, $callback, 1, $deterministic);
         } elseif ($connection instanceof \SQLite3) {
             $connection->createFunction(self::NAME, $callback, 1, \SQLITE3_DETERMINISTIC);

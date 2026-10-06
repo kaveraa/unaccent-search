@@ -24,7 +24,7 @@ final class SqliteFunctionTest extends TestCase
     {
         $pdo = new \PDO('sqlite::memory:');
         SqliteFunction::register($pdo);
-        SqliteFunction::register($pdo); // un second appel ne fait rien
+        SqliteFunction::register($pdo); // a second call does nothing
 
         self::assertSame('creme brulee', $pdo->query("SELECT unaccent_search('Crème BRÛLÉE')")->fetchColumn());
         self::assertSame('ečole', $pdo->query("SELECT unaccent_search('ÉČOLE')")->fetchColumn(), 'majuscule hors table mise en minuscule');
