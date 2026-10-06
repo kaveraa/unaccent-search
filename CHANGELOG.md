@@ -4,6 +4,13 @@
 
 **EN** All important changes of the package are listed here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [semantic versioning](https://semver.org/).
 
+## [2.0.3] - 2026-09-29
+
+### Maintenance
+
+- **FR** Configuration Dependabot ajoutée et actions de la CI mises à jour (`actions/checkout` v7, `ramsey/composer-install` v4). Aucun changement dans le code.
+  **EN** Dependabot configuration added and CI actions updated (`actions/checkout` v7, `ramsey/composer-install` v4). No code change.
+
 ## [2.0.2] - 2026-09-29
 
 ### Documentation
@@ -70,6 +77,7 @@
 - **FR** Table de remplacement extensible via la configuration Laravel, la configuration Symfony ou `Normalizer::extend()`.
   **EN** You can add characters to the replacement table with the Laravel configuration, the Symfony configuration or `Normalizer::extend()`.
 
+[2.0.3]: https://github.com/kaveraa/unaccent-search/compare/v2.0.2...v2.0.3
 [2.0.2]: https://github.com/kaveraa/unaccent-search/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/kaveraa/unaccent-search/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/kaveraa/unaccent-search/compare/v1.0.2...v2.0.0
