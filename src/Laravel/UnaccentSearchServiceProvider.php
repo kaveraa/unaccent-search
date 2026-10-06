@@ -13,18 +13,18 @@ use Kaveraa\UnaccentSearch\SqlExpression;
 use Kaveraa\UnaccentSearch\SqliteFunction;
 
 /**
- * Ajoute au Query Builder (et donc à Eloquent) des méthodes de recherche
- * insensibles à la casse et aux accents :
+ * Adds search methods to the Query Builder (and so to Eloquent)
+ * that ignore case and accents:
  *
  *     Product::whereLikeUnaccent('name', $request->search)->get();
  *     Product::whereAnyLikeUnaccent(['name', 'code'], $request->search)->get();
  *
- * Chargé automatiquement par la découverte de paquets de Laravel.
+ * Loaded automatically by Laravel package discovery.
  */
 class UnaccentSearchServiceProvider extends ServiceProvider
 {
     /**
-     * Nom de colonne accepté : "colonne", "table.colonne" ou une clé JSON "colonne->cle->sous_cle".
+     * Accepted column name: "column", "table.column" or a JSON key "column->key->sub_key".
      */
     private const COLUMN_PATTERN = '/^[A-Za-z_][A-Za-z0-9_]*(\.[A-Za-z_][A-Za-z0-9_]*)?(->[A-Za-z0-9_]+)*$/';
 
@@ -47,8 +47,8 @@ class UnaccentSearchServiceProvider extends ServiceProvider
     }
 
     /**
-     * Enregistre les macros sur Illuminate\Database\Query\Builder.
-     * Appelé par boot() ; public pour pouvoir être utilisé hors ServiceProvider.
+     * Registers the macros on Illuminate\Database\Query\Builder.
+     * Called by boot(); public so it can be used outside the ServiceProvider.
      */
     public static function registerMacros(): void
     {
@@ -131,7 +131,7 @@ class UnaccentSearchServiceProvider extends ServiceProvider
     }
 
     /**
-     * Expression SQL normalisée pour une colonne (ou une expression brute DB::raw()).
+     * Normalized SQL expression for a column (or a raw expression DB::raw()).
      *
      * @internal
      */

@@ -121,11 +121,11 @@ final class LaravelTest extends TestCase
 
     public function test_whereAnyLikeUnaccent_cherche_dans_plusieurs_colonnes(): void
     {
-        // "francais" est dans code (Français), "eleve" dans name
+        // "francais" is in code (Français), "eleve" in name
         $names = Product::whereAnyLikeUnaccent(['name', 'code'], 'francais')->pluck('name')->all();
         self::assertSame(['Garçon'], $names);
 
-        // Le groupe OR est bien entre parenthèses : le where suivant s'applique à tout le groupe
+        // The OR group is inside parentheses: the next where applies to the whole group
         $names = Product::whereAnyLikeUnaccent(['name', 'code'], 'elv')->where('code', 'ELV-02')->pluck('name')->all();
         self::assertSame(['eleve'], $names);
     }

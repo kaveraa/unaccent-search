@@ -92,7 +92,7 @@ final class DoctrineTest extends DoctrineTestCase
         UnaccentQuery::andWhereAnyLike($qb, ['p.name', 'p.code'], 'francais');
         self::assertSame(['Garçon'], self::names($qb));
 
-        // Le groupe OR est bien entre parenthèses : la condition suivante s'applique à tout le groupe
+        // The OR group is inside parentheses: the next condition applies to the whole group
         $qb = $this->products();
         UnaccentQuery::andWhereAnyLike($qb, ['p.name', 'p.code'], 'elv');
         $qb->andWhere('p.code = :code')->setParameter('code', 'ELV-02');
@@ -122,8 +122,8 @@ final class DoctrineTest extends DoctrineTestCase
 
     public function test_remplacements_supplementaires(): void
     {
-        // Avec la collation par défaut de MySQL/MariaDB (utf8mb4_*_ci), LIKE ignore déjà les accents :
-        // "č" est alors trouvé même sans remplacement supplémentaire.
+        // With the default collation of MySQL/MariaDB (utf8mb4_*_ci), LIKE already ignores accents:
+        // "č" is then found even without an extra replacement.
         if (! in_array(TestDatabase::driver(), ['mysql', 'mariadb'], true)) {
             $qb = $this->products();
             UnaccentQuery::andWhereLike($qb, 'p.name', 'caj');

@@ -9,27 +9,27 @@ use Kaveraa\UnaccentSearch\Mode;
 use Kaveraa\UnaccentSearch\Normalizer;
 
 /**
- * Ajoute à un QueryBuilder Doctrine des conditions de recherche insensibles
- * à la casse et aux accents, sans écrire le DQL à la main :
+ * Adds search conditions to a Doctrine QueryBuilder that ignore case
+ * and accents, without writing the DQL by hand:
  *
  *     $qb = $repository->createQueryBuilder('p');
  *     UnaccentQuery::andWhereLike($qb, 'p.name', $search);
  *     UnaccentQuery::andWhereAnyLike($qb, ['p.name', 'p.code'], $search);
  *
- * Un terme vide ou null n'ajoute aucune condition. Nécessite la fonction DQL
- * UNACCENT (enregistrée automatiquement par UnaccentSearchBundle).
+ * An empty or null term adds no condition. Needs the DQL function
+ * UNACCENT (registered automatically by UnaccentSearchBundle).
  */
 final class UnaccentQuery
 {
     /**
-     * Champ DQL accepté : "alias.champ" ou "alias.embedded.champ".
+     * Accepted DQL field: "alias.field" or "alias.embedded.field".
      */
     private const FIELD_PATTERN = '/^[A-Za-z_][A-Za-z0-9_]*(\.[A-Za-z_][A-Za-z0-9_]*)+$/';
 
     private static int $parameterCounter = 0;
 
     /**
-     * Ajoute "AND champ ressemble au terme".
+     * Adds "AND field looks like the term".
      */
     public static function andWhereLike(QueryBuilder $qb, string $field, ?string $term, Mode|string $mode = Mode::Contains): QueryBuilder
     {
@@ -39,7 +39,7 @@ final class UnaccentQuery
     }
 
     /**
-     * Ajoute "OR champ ressemble au terme".
+     * Adds "OR field looks like the term".
      */
     public static function orWhereLike(QueryBuilder $qb, string $field, ?string $term, Mode|string $mode = Mode::Contains): QueryBuilder
     {
@@ -49,7 +49,7 @@ final class UnaccentQuery
     }
 
     /**
-     * Ajoute "AND champ ne ressemble pas au terme".
+     * Adds "AND field does not look like the term".
      */
     public static function andWhereNotLike(QueryBuilder $qb, string $field, ?string $term, Mode|string $mode = Mode::Contains): QueryBuilder
     {
@@ -59,8 +59,8 @@ final class UnaccentQuery
     }
 
     /**
-     * Ajoute "AND (champ1 ressemble au terme OR champ2 ressemble au terme ...)" :
-     * idéal pour un champ de recherche global.
+     * Adds "AND (field1 looks like the term OR field2 looks like the term ...)":
+     * ideal for a global search box.
      *
      * @param list<string> $fields
      */
@@ -80,8 +80,8 @@ final class UnaccentQuery
     }
 
     /**
-     * Construit la condition DQL et lie son paramètre au QueryBuilder, pour un usage libre
-     * (dans un orX() maison, un having...). Retourne null si le terme est vide.
+     * Builds the DQL condition and binds its parameter to the QueryBuilder, for free use
+     * (in your own orX(), a having...). Returns null if the term is empty.
      */
     public static function condition(QueryBuilder $qb, string $field, ?string $term, Mode|string $mode = Mode::Contains, bool $not = false): ?string
     {
